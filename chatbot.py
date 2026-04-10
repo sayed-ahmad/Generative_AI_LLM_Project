@@ -71,7 +71,7 @@ class InterviewPrepChatbot:
         if normalized_difficulty not in self.VALID_DIFFICULTIES:
             return (
                 "Please choose a valid difficulty: beginner, intermediate, or advanced. "
-                f"You entered '{difficulty}'."
+                f"You entered '{normalized_difficulty}'."
             )
 
         question = random.choice(topic_bank[normalized_difficulty])
