@@ -21,7 +21,7 @@ To build an AI-powered assistant that helps users:
 
 ## 🌐 Live Demo
 
-👉 Try the chatbot here:
+👉 Try the chatbot here: https://huggingface.co/spaces/Mahboobi/DataScience
 
 ---
 
