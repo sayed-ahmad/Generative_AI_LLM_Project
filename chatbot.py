@@ -33,6 +33,7 @@ class InterviewPrepChatbot:
             "advanced": ["How would you optimize a slow query on a large fact table?"],
         },
     }
+    VALID_DIFFICULTIES = {"beginner", "intermediate", "advanced"}
 
     CONCEPT_EXPLANATIONS = {
         "bias-variance tradeoff": (
@@ -62,7 +63,14 @@ class InterviewPrepChatbot:
         if not topic_bank:
             return f"I don't have interview questions for '{selected_topic}' yet."
 
-        question = random.choice(topic_bank.get(difficulty.lower(), topic_bank["intermediate"]))
+        normalized_difficulty = difficulty.lower()
+        if normalized_difficulty not in self.VALID_DIFFICULTIES:
+            return (
+                "Please choose a valid difficulty: beginner, intermediate, or advanced. "
+                f"You entered '{difficulty}'."
+            )
+
+        question = random.choice(topic_bank[normalized_difficulty])
         return f"[{selected_topic.title()} • {difficulty.title()}] {question}"
 
     def explain_concept(self, concept: str) -> str:
@@ -85,8 +93,16 @@ class InterviewPrepChatbot:
 
         if lowered.startswith("question"):
             parts = text.split()
-            topic = parts[1] if len(parts) > 1 else None
-            difficulty = parts[2] if len(parts) > 2 else "intermediate"
+            topic = None
+            difficulty = "intermediate"
+            if len(parts) > 1:
+                second = parts[1].lower()
+                if second in self.VALID_DIFFICULTIES:
+                    difficulty = second
+                else:
+                    topic = parts[1]
+            if len(parts) > 2:
+                difficulty = parts[2].lower()
             return self.generate_question(topic=topic, difficulty=difficulty)
 
         if lowered.startswith("explain "):
