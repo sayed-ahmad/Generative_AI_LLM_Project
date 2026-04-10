@@ -34,6 +34,7 @@ class InterviewPrepChatbot:
         },
     }
     VALID_DIFFICULTIES = {"beginner", "intermediate", "advanced"}
+    TOPIC_LABELS = {"sql": "SQL"}
 
     CONCEPT_EXPLANATIONS = {
         "bias-variance tradeoff": (
@@ -57,6 +58,9 @@ class InterviewPrepChatbot:
         if cleaned:
             self.profile.focus_topics = cleaned
 
+    def _topic_label(self, topic: str) -> str:
+        return self.TOPIC_LABELS.get(topic.lower(), topic.title())
+
     def generate_question(self, topic: str | None = None, difficulty: str = "intermediate") -> str:
         selected_topic = (topic or random.choice(self.profile.focus_topics)).lower()
         topic_bank = self.QUESTION_BANK.get(selected_topic)
@@ -71,7 +75,7 @@ class InterviewPrepChatbot:
             )
 
         question = random.choice(topic_bank[normalized_difficulty])
-        return f"[{selected_topic.title()} • {normalized_difficulty.title()}] {question}"
+        return f"[{self._topic_label(selected_topic)} • {normalized_difficulty.title()}] {question}"
 
     def explain_concept(self, concept: str) -> str:
         explanation = self.CONCEPT_EXPLANATIONS.get(concept.strip().lower())
