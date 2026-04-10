@@ -71,7 +71,7 @@ class InterviewPrepChatbot:
             )
 
         question = random.choice(topic_bank[normalized_difficulty])
-        return f"[{selected_topic.title()} • {difficulty.title()}] {question}"
+        return f"[{selected_topic.title()} • {normalized_difficulty.title()}] {question}"
 
     def explain_concept(self, concept: str) -> str:
         explanation = self.CONCEPT_EXPLANATIONS.get(concept.strip().lower())
